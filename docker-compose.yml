@@ -1,0 +1,32 @@
+services:
+  database:
+    container_name: postgres
+    image: postgres:14.5
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=shopping
+
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "/wait && python run.py"  # wait for db, then run
+    ports:
+      - 4000:4000
+    environment:
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_CONNECTION=POSTGRES
+      - WAIT_HOSTS=postgres:5432  # docker-compose-wait settings
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    depends_on:
+      - database
+    volumes:
+      - ./app:/src/app
