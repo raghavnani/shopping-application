@@ -12,9 +12,9 @@ class OrderService(AbstractService):
     def repository(self):
         return OrderRepository()
     
-    def create_order(self, name):
+    def create_order(self, user_name):
         
-        user = UserService().get_user_by_name(name)
+        user = UserService().get_user_by_name(user_name)
 
         if user is None:
             raise Exception("User not found")
@@ -23,6 +23,9 @@ class OrderService(AbstractService):
 
         if cart is None:
             raise Exception("Cart not found")
+        
+        if len(cart["cart_items"]) == 0:
+            raise Exception("Cart is empty")
 
         return self.repository().create_order(user, cart)
 
@@ -34,4 +37,13 @@ class OrderService(AbstractService):
     
     def delete_by_id(self, id):
         return self.repository().delete_by_id(id)
+    
+    
+    
+    def get_order_by_name(self, user_name):
 
+        user = UserService().get_user_by_name(user_name)
+        if user is None:
+            raise Exception("User not found")
+        
+        return self.repository().get_order_by_name(user.id)

@@ -58,6 +58,9 @@ def delete_by_id(id):
 def update_by_id(id):
             try:
                 product = service.update_by_id(id)
+                price = request.json['price']
+                quantity = request.json['quantity']
+                product = service.update_by_id(id, price, quantity)
             except Exception as e:
                 return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
         

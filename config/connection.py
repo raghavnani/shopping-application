@@ -1,19 +1,16 @@
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 # Statement for enabling the development environment
 DEBUG = True
 
 # Define .env
-#load_dotenv()
+# load_dotenv()
+
 POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 POSTGRES_CONNECTION = os.getenv("POSTGRES_CONNECTION")
+# POSTGRES_CONNECTION = "localhost"
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
-
-print(POSTGRES_USER)
-print(POSTGRES_PASSWORD)
-print(POSTGRES_CONNECTION)
-print(POSTGRES_PORT)
 
 
 # Define the database

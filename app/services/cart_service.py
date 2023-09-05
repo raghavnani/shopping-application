@@ -18,15 +18,19 @@ class CartService(AbstractService):
 
         user = UserService().get_user_by_name(user_name)
         product = ProductService().get_product_by_name(product_name)
+
         if not user or not product:
             raise Exception('User or Product not found')
         
+        
         cart = self.repository().find_by_user_id(user.id)
+
         if not cart:
             cart = Cart(user_id=user.id)
             cart = self.repository().save(cart)
-
-        cart_item = self.repository().create_cart_item(cart.id, product.id, 1)
+            cart_item = self.repository().create_cart_item(cart.id, product.id, 1)
+        else:
+            cart_item = self.repository().create_cart_item(cart["id"], product.id, 1)
 
         return cart_item
     
@@ -37,6 +41,7 @@ class CartService(AbstractService):
         user = UserService().get_user_by_name(user_name)
         if not user:
             raise Exception('User not found')
+
         return self.repository().find_by_user_id(user.id)
 
     def get_all(self):

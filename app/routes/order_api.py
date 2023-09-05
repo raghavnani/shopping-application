@@ -13,29 +13,22 @@ order_api = Blueprint('order_api', __name__)
 @order_api.route('/api/order', methods=['POST'])
 def create_order():
         try:
-            name = request.json['user_name']
-            order = service.create_order(name)
+            user_name = request.json['user_name']
+            order = service.create_order(user_name)
         except Exception as e:
             return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
 
         return Response(json.dumps(order, cls=AlchemyEncoder) , status=200, content_type="application/json")
 
 
-@order_api.route('/api/orders', methods=['GET'])
-def get_all():
+@order_api.route('/api/get_order_by_name', methods=['GET'])
+def get_order_by_name():
     
         try:
-            orders = service.get_all()
+            user_name = request.args.get('user_name')
+            orders = service.get_order_by_name(user_name)
         except Exception as e:
             return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
     
         return Response(json.dumps(orders, cls=AlchemyEncoder) , status=200, content_type="application/json")
 
-@order_api.route('/api/orders/<id>', methods=['GET'])
-def get_by_id(id):
-            try:
-                order = service.get_by_id(id)
-            except Exception as e:
-                return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
-        
-            return Response(json.dumps(order, cls=AlchemyEncoder) , status=200, content_type="application/json")

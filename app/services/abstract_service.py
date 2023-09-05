@@ -12,3 +12,12 @@ class AbstractService():
 
     def delete_by_id(self, id):
         self.repository().delete_by_id(id)
+
+    def update_by_id(self, id, price, quantity):
+        entity =  self.repository().find_by_id(id)
+        entity.price = price
+        entity.quantity = quantity
+        self.repository().update(entity)
+        return entity
+
+    

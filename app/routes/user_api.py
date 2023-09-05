@@ -42,22 +42,3 @@ def get_by_id(id):
                 return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
         
             return Response(json.dumps(user, cls=AlchemyEncoder) , status=200, content_type="application/json")
-
-@user_api.route('/api/users/<id>', methods=['DELETE'])
-def delete_by_id(id):
-            try:
-                user = service.delete_by_id(id)
-            except Exception as e:
-                return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
-
-            return Response(json.dumps(user, cls=AlchemyEncoder) , status=200, content_type="application/json")
-
-
-@user_api.route('/api/users/<id>', methods=['PUT'])
-def update_by_id(id):
-            try:
-                user = service.update_by_id(id)
-            except Exception as e:
-                return Response(response=json.dumps({'message': 'Error', 'error': str(e)}), status=500, content_type="application/json")
-        
-            return Response(json.dumps(user, cls=AlchemyEncoder) , status=200, content_type="application/json")
